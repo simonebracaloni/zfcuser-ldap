@@ -1,5 +1,5 @@
 {
-    "name": "nitecon/zfcuser-ldap",
+    "name": "simonebracaloni/zfcuser-ldap",
     "description": "Zend Framework 2 ZfcUser LDAP Authentication",
     "type": "library",
     "keywords": ["zf2","zfcuser","ldap"],
