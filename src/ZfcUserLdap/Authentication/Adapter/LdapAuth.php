@@ -130,8 +130,7 @@ class LdapAuth extends AbstractAdapter implements ServiceManagerAwareInterface
         $storage['identity'] = $userObject;
         $this->getStorage()->write($storage);
         $e->setCode(AuthenticationResult::SUCCESS)
-                ->setMessages(array('Authentication successful.'))
-                ->stopPropagation();
+                ->setMessages(array('Authentication successful.'));
     }
 
     /**
