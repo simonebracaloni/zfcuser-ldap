@@ -12,6 +12,7 @@ use ZfcUser\Options\AuthenticationOptionsInterface;
 use ZfcUserLdap\Mapper\UserHydrator;
 use Zend\Validator\EmailAddress;
 use Zend\Authentication\Exception\UnexpectedValueException as UnexpectedExc;
+use Zend\Session\Container as SessionContainer;
 
 class LdapAuth extends AbstractAdapter implements ServiceManagerAwareInterface
 {
@@ -119,6 +120,11 @@ class LdapAuth extends AbstractAdapter implements ServiceManagerAwareInterface
                 return false;
             }
         }
+        //Save $ldapObj in the session
+        //  ---------------Get Data from LDAP --------------------------
+        $session = new SessionContainer('ZfcUserLdap');
+        $session->offsetSet('ldapObj',$ldapObj );
+        
 
         // Set the roles for stuff like ZfcRbac
         $userObject->setRoles($this->getMapper()->getLdapRoles($ldapObj));
@@ -131,6 +137,7 @@ class LdapAuth extends AbstractAdapter implements ServiceManagerAwareInterface
         $this->getStorage()->write($storage);
         $e->setCode(AuthenticationResult::SUCCESS)
                 ->setMessages(array('Authentication successful.'));
+//                ->stopPropagation();
     }
 
     /**

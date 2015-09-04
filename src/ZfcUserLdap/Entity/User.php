@@ -42,6 +42,11 @@ class User implements UserInterface, IdentityInterface
      * @var string
      */
     protected $roles;
+    
+    /**
+     * @var string
+     */
+    protected $plainPsw;
 
     /**
      * Get id.
@@ -194,4 +199,14 @@ class User implements UserInterface, IdentityInterface
     {
         $this->roles = $roles;
     }
+    
+    function popPlainPsw() {
+        return $this->plainPsw;
+    }
+
+    function pushPlainPsw($plainPsw) {
+        $this->plainPsw = $plainPsw;
+    }
+
+
 }

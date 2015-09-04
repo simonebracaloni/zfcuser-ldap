@@ -75,7 +75,11 @@ class User extends AbstractUserMapper implements UserInterface, ServiceManagerAw
         if (!$where) {
             $where = 'user_id = ' . $entity->getId();
         }
-
+        
+        /* @var $ldapAuthAdapter \ZfcUserLdap\Adapter\Ldap */
+        $ldapAuthAdapter = $this->serviceManager->get('ZfcUserLdap\LdapAdapter');
+        $ldapAuthAdapter->update($entity);
+        
         return parent::update($entity, $where, $tableName, $hydrator);
     }
 

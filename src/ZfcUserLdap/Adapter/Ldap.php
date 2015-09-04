@@ -159,4 +159,25 @@ class Ldap
             return $messages;
         }
     }
+    
+    public function update(\ZfcUser\Entity\UserInterface $entity){
+        $this->bind();
+        
+        $dnArray = array(
+            "uid"=> $entity->getEmail(),
+        );
+        $baseDn = $this->active_server['baseDn'];
+        $dn = \Zend\Ldap\Dn::fromString($baseDn);
+        $dn->prepend($dnArray);
+        
+        $data = array();
+        
+        if($entity instanceof \ZfcUserLdap\Entity\User){
+            if($plainPsw = $entity->popPlainPsw()){
+                $data['userPassword'] = $plainPsw;
+            }
+        }
+        
+        $this->ldap->save($dn,$data);
+    }
 }
