@@ -173,6 +173,9 @@ class Ldap
         $data = array();
         
         if($entity instanceof \ZfcUserLdap\Entity\User){
+            
+            $data = $entity->rawData()?:$data;
+            
             if($plainPsw = $entity->popPlainPsw()){
                 $data['userPassword'] = $plainPsw;
             }

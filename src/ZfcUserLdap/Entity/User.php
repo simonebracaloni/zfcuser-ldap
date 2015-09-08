@@ -47,6 +47,8 @@ class User implements UserInterface, IdentityInterface
      * @var string
      */
     protected $plainPsw;
+    
+    protected $ldapData;
 
     /**
      * Get id.
@@ -200,12 +202,20 @@ class User implements UserInterface, IdentityInterface
         $this->roles = $roles;
     }
     
-    function popPlainPsw() {
+    public function popPlainPsw() {
         return $this->plainPsw;
     }
 
-    function pushPlainPsw($plainPsw) {
+    public function pushPlainPsw($plainPsw) {
         $this->plainPsw = $plainPsw;
+    }
+    
+    public function linkRawData($data) {
+        $this->ldapData = $data;
+    }
+    
+    public function rawData() {
+        return $this->ldapData;
     }
 
 
