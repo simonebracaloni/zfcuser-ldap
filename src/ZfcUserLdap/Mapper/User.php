@@ -15,11 +15,25 @@ class User extends AbstractUserMapper implements UserInterface, ServiceManagerAw
 
     public function findByEmail($email)
     {
+        /* @var $ldapAuthAdapter \ZfcUserLdap\Adapter\Ldap */
+        $ldapAuthAdapter = $this->serviceManager->get('ZfcUserLdap\LdapAdapter');
+        $ldapEntity = $ldapAuthAdapter->findByEmail($email);
+        
         $select = $this->getSelect()->where(array('email' => $email));
         $entity = $this->select($select, $this->getEntity(), new HydratorInterface())->current();
         if (is_object($entity) && strlen($entity->getUsername()) > 0) {
             $this->getEventManager()->trigger('find', $this, array('entity' => $entity));
         }
+        
+        if ($ldapEntity && !$entity) {
+            $zulConfig = $this->serviceManager->get('ZfcUserLdap\Config');
+            // If auto insertion is on, we will check against DB for existing user,
+            // then will create or update user depending on results and settings
+            if ($zulConfig['auto_insertion']['enabled']) {
+                $entity = $this->updateDb($ldapEntity, null);
+            }
+        }
+
         /* Now we select again so that it provides us with the ID as well
          * as assurance that the user made it into the database
          */
