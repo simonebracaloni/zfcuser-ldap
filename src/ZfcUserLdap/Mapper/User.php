@@ -170,8 +170,15 @@ class User extends AbstractUserMapper implements UserInterface, ServiceManagerAw
         }
         return $entity;
     }
+    
+    public function fetchLocalUser(){
+        $select = $this->getSelect();
+        $resultSet = $this->select($select, $this->getEntity(), new HydratorInterface());
+        return $resultSet;
+    }
 
-    public function getLdapRoles($ldapObject)
+
+        public function getLdapRoles($ldapObject)
     {
         $roles = array();
         $config = $this->getServiceManager()->get('ZfcUserLdap\Config');
